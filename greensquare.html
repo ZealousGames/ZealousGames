@@ -17,6 +17,12 @@
         padding-left: 15px;
         padding-right: 15px;
     }
+
+    p {
+    font-size: 24px;
+    font-family: arial, sans-serif;
+    letter-spacing: 4px;
+    }
 </style>
 <body>
     <h1>Green Square</h1>
@@ -45,7 +51,7 @@
 
     // Detects if and what key is being pressed
     document.onkeydown = function(event) {
-        
+        if(Timer === "Game Finished) {} else {
         if(event.key === "ArrowLeft") {
             if(Xpos > 0) {
                 moveLeft();
@@ -68,6 +74,8 @@
         }
         updateCoordinates(); 
     }
+}
+    
 
     // The functions that move the player
     function moveLeft() {
