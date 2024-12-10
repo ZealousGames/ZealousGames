@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<head>
+    <title>Jumper</title>
+</head>
+<style>
+    body {
+        background-color: lightblue;
+    }
+    canvas {
+        display: block;
+        background-color: #ffffff;
+        border-color: black;
+        border-style: solid;
+    }
+
+    button {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+</style>
+<body>
+    <h1>Green Square</h1>
+    <p>Green Square is a game by ZealousGames where you use the arrow keys to control a green square. Your goal is to score points by moving over the red squares, before the timer of 20 seconds runs out. Each red square adds one point to your score. The game also has cool features like coordinates. The timer will start once you make your first movement. Can you beat 8?</p>
+    <button onclick="window.location.reload();">Restart</button>
+    <br>
+    <canvas id="gamewindow" width="500" height="500"></canvas>
+
+<script>
+    // Setup stuff
+    const canvas = document.getElementById("gamewindow");
+    const ctx = canvas.getContext("2d");
+    var Xpos = 200;
+    var Ypos = 200;
+    var Score = 0;
+    var Timer = 20;
+    var timerRunning = false; // Track if the timer is running
+    var timerInterval; // Store the interval ID
+    var redX, redY; // Coordinates of the red square
+
+    ctx.fillStyle = "green";
+    ctx.fillRect(Xpos, Ypos, 50, 50);
+    generateDrop();
+
+    // Show initial coordinates
+
+    // Detects if and what key is being pressed
+    document.onkeydown = function(event) {
+        
+        if(event.key === "ArrowLeft") {
+            if(Xpos > 0) {
+                moveLeft();
+            }
+        }
+        if(event.key === "ArrowRight") {
+            if(Xpos < 450) {
+                moveRight();
+            }
+        }
+        if(event.key === "ArrowUp") {
+            if(Ypos > 0) {
+                moveUp();
+            }
+        }
+        if(event.key === "ArrowDown") {
+            if(Ypos < 450) {
+                moveDown();
+            }
+        }
+        updateCoordinates(); 
+    }
+
+    // The functions that move the player
+    function moveLeft() {
+        Xpos -= 10;
+        updateCanvas();
+    }
+
+    function moveRight() {
+        Xpos += 10;
+        updateCanvas();
+    }
+
+    function moveUp() {
+        Ypos -= 10;
+        updateCanvas();
+    }
+
+    function moveDown() {
+        Ypos += 10;
+        updateCanvas();
+    }
+
+    function updateCanvas() {
+        ctx.clearRect(0, 0, 500, 500); // Clear the previous frame
+        ctx.fillStyle = "green";
+        ctx.fillRect(Xpos, Ypos, 50, 50); // Draw the player at the new position
+        updateDrop(); // Check if the player hits the red square
+    }
+
+    // This shows the coordinates
+    function updateCoordinates() {
+        document.getElementById("coordinates").textContent = "Coordinates: " + Xpos + ", " + Ypos;
+    }
+
+    function updateDrop() {
+        ctx.fillStyle = "red";
+        ctx.fillRect(redX, redY, 50, 50);
+        if (
+            Xpos < redX + 50 && Xpos + 50 > redX && Ypos < redY + 50 && Ypos + 50 > redY    
+        ) {
+            Score += 1;
+            document.getElementById("score").textContent = "Score: " + Score;
+            generateDrop();
+        }
+    }
+
+    function generateDrop() {
+        redX = Math.floor(Math.random() * 450);
+        redY = Math.floor(Math.random() * 450);
+        ctx.fillStyle = "red";
+        ctx.fillRect(redX, redY, 50, 50);
+    }
+
+    // Timer stuff
+    function updateTimer() {
+        document.getElementById("timer").textContent = Timer;
+        console.log("timer goes down");
+        Timer -= 1;
+
+        if (Timer < 0) {
+            alert('Time is up! Here is your score: ' + Score);
+            clearInterval(timerInterval); // Stop the timer
+            document.getElementById("timer").textContent = "Game Finished"; // Show "Game Finished"
+            Timer = "game finished"; // Ensure the timer doesn't update anymore
+        }
+    }
+
+    function startTimer() {
+        if (!timerRunning) {
+            timerRunning = true;
+            timerInterval = setInterval(updateTimer, 1000); // Start the timer with 1 second interval
+        }
+    }
+
+    // Start the timer when any arrow key is pressed
+    document.addEventListener('keydown', function(event) {
+        if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight' || event.key === 'ArrowUp' || event.key === 'ArrowDown') && !timerRunning) {
+            startTimer();
+        }
+    });
+</script>
+    <p id="coordinates">Coordinates: 200, 200</p> <!-- Initial coordinates display -->
+    <p id="score">Score: 0</p>
+    <p id="timer">20</p> <!-- Initial timer display -->
+</body>
+</html>
