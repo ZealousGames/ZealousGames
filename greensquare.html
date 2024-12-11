@@ -5,45 +5,87 @@
 <style>
     body {
         background-color: lightblue;
+        font-family: arial;
     }
     canvas {
-        display: block;
+        display: inline;
         background-color: #ffffff;
         border-color: black;
         border-style: solid;
+        width: 500px;
+        height: 500px;
     }
 
     button {
-        padding-left: 15px;
-        padding-right: 15px;
+        padding-left: 45px;
+        padding-right: 45px;
+        font-size: 15px;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        border-color: rgb(181, 104, 10);
+        color: rgb(171, 94, 0);
+        background-color: orange;
     }
 
-    h1 {
-font-family: arial, sans-serif;
-        font-size: 36px;
+    .values {
+        font-size: 28px;
+        line-height: 45px;
+        font-weight: bold;
+    }
+
+    .inline {
+        padding: 20px;
+        border-style: solid;
+        float: right;
+        background-color: orange;
+        margin-right: 50px;
+    }
+
+    .motherdiv {
+
+        display: flex;
     }
 
     p {
-    font-size: 24px;
-    font-family: arial, sans-serif;
-    letter-spacing: 4px;
+        text-align: center;
+        font-size: 23px;
+        margin-left: 60px;
+        margin-right: 60px;
+    }
+
+    h1 {
+        font-size: 50px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        text-align: center;
     }
 </style>
 <body>
     <h1>Green Square</h1>
-    <p>Green Square is a game by <a href="zealousgames.github.io">ZealousGames</a> where you use the arrow keys to control a green square. Your goal is to score points by moving over the red squares, before the timer of 20 seconds runs out. Each red square adds one point to your score. The game also has cool features like coordinates. The timer will start once you make your first movement. Can you beat 8?</p>
-    <button onclick="window.location.reload();">Restart</button>
+    <p>Green Square is a game by <a href="https://zellusgames.github.io">ZellusGames</a> where you use the arrow keys to control a green square. Your goal is to score points by moving over the red squares, before the timer of 20 seconds runs out. Each red square adds one point to your score. The game also has cool features like coordinates. The timer will start once you make your first movement. Can you beat 9?</p>
+    <button onclick="window.location.reload();">Restart</button> <a>Version 1.1: Fixed bug where red doesn't disappear, fixed bug where player can continue after game ends, updated CSS</a>
     <br>
+    <br>
+
+<div class="motherdiv">
+        <div class="inline">
+            <p id="coordinates" class="values">Coordinates: 200, 200</p> <!-- Initial coordinates display -->
+            <p id="score" class="values">Score: 0</p>
+            <p id="timer" class="values">Time Left: 20</p> <!-- Initial timer display -->
+            <p class="values">By ZealousGames</p>
+        </div>
     <canvas id="gamewindow" width="500" height="500"></canvas>
 
 <script>
     // Setup stuff
     const canvas = document.getElementById("gamewindow");
     const ctx = canvas.getContext("2d");
+    ctx.fillText("Press arrow keys to begin",10,80);
     var Xpos = 200;
     var Ypos = 200;
+    var Speed = 12;
     var Score = 0;
-    var Timer = 20;
+    var Timer = 19;
     var timerRunning = false; // Track if the timer is running
     var timerInterval; // Store the interval ID
     var redX, redY; // Coordinates of the red square
@@ -56,6 +98,7 @@ font-family: arial, sans-serif;
 
     // Detects if and what key is being pressed
     document.onkeydown = function(event) {
+        
         if(event.key === "ArrowLeft") {
             if(Xpos > 0) {
                 moveLeft();
@@ -77,27 +120,26 @@ font-family: arial, sans-serif;
             }
         }
         updateCoordinates(); 
-}
-    
+    }
 
     // The functions that move the player
     function moveLeft() {
-        Xpos -= 10;
+        Xpos -= Speed;
         updateCanvas();
     }
 
     function moveRight() {
-        Xpos += 10;
+        Xpos += Speed;
         updateCanvas();
     }
 
     function moveUp() {
-        Ypos -= 10;
+        Ypos -= Speed;
         updateCanvas();
     }
 
     function moveDown() {
-        Ypos += 10;
+        Ypos += Speed;
         updateCanvas();
     }
 
@@ -128,13 +170,12 @@ font-family: arial, sans-serif;
     function generateDrop() {
         redX = Math.floor(Math.random() * 450);
         redY = Math.floor(Math.random() * 450);
-        ctx.fillStyle = "red";
-        ctx.fillRect(redX, redY, 50, 50);
+        updateCanvas()
     }
 
     // Timer stuff
     function updateTimer() {
-        document.getElementById("timer").textContent = "Time left: " + Timer;
+        document.getElementById("timer").textContent = "Time Left: " + Timer;
         console.log("timer goes down");
         Timer -= 1;
 
@@ -142,6 +183,7 @@ font-family: arial, sans-serif;
             alert('Time is up! Here is your score: ' + Score);
             clearInterval(timerInterval); // Stop the timer
             document.getElementById("timer").textContent = "Game Finished"; // Show "Game Finished"
+            Speed = 0;
             Timer = "game finished"; // Ensure the timer doesn't update anymore
         }
     }
@@ -160,8 +202,7 @@ font-family: arial, sans-serif;
         }
     });
 </script>
-    <p id="coordinates">Coordinates: 200, 200</p> <!-- Initial coordinates display -->
-    <p id="score">Score: 0</p>
-    <p id="timer">20</p> <!-- Initial timer display -->
+<img src="logo.jpg" width="440px" height="440px" style="border-style: solid; border-color: orange; border-width: 35px; margin-left: 60px;">
+</div>
 </body>
 </html>
