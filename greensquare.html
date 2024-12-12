@@ -58,6 +58,14 @@
         margin-top: 5px;
         text-align: center;
     }
+
+    #gamewindow {
+        
+    }
+
+    .centerbox {
+    text-align: center;
+    }
 </style>
 <body>
     <h1>Green Square</h1>
@@ -71,10 +79,11 @@
             <p id="coordinates" class="values">Coordinates: 200, 200</p> <!-- Initial coordinates display -->
             <p id="score" class="values">Score: 0</p>
             <p id="timer" class="values">Time Left: 20</p> <!-- Initial timer display -->
-            <p class="values">By ZealousGames</p>
+            <p class="values">By ZellusGames</p>
         </div>
+    <div class="centerbox">
     <canvas id="gamewindow" width="500" height="500"></canvas>
-
+    </div>
 <script>
     // Setup stuff
     const canvas = document.getElementById("gamewindow");
